@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 	<?php require_once('config.php') ?>
+	<?php require_once( ROOT_PATH . '/includes/public_functions.php') ?>
+	<?php require_once( ROOT_PATH . '/includes/registration_login.php') ?>
+	<?php $posts = getPublishedPosts(); ?>
 	<title> Blog | HOMEPAGE </title>
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="">
@@ -27,6 +30,27 @@
 		<div class="content">
 			<h2 class="content-title">Recent Articles</h2>
 			<hr>
+			<?php foreach ($posts as $post): ?>
+				<div class="post">
+					<img src="<?php echo BASE_URL . '/images/' . $post['image']; ?>" class="post_image" alt="">
+						<?php if (isset($post['topic']['name'])): ?>
+							<a 
+								href="<?php echo BASE_URL . 'filtered_posts.php?topic=' . $post['topic']['id'] ?>"
+								class="btn category">
+								<?php echo $post['topic']['name'] ?>
+							</a>
+						<?php endif ?>
+					<a href="single_post.php?post-slug=<?php echo $post['slug']; ?>">
+						<div class="post_info">
+							<h3><?php echo $post['title'] ?></h3>
+							<div class="info">
+								<span><?php echo date("F j, Y ", strtotime($post["created_at"])); ?></span>
+								<span class="read_more">Read more...</span>
+							</div>
+						</div>
+					</a>
+				</div>
+			<?php endforeach ?>
 		</div>
 	</div>
     <?php include ('includes/footer.php')?>
